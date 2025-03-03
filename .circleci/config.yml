@@ -13,9 +13,44 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm ci
-      - run: npm test
+      - run:
+          name: Lint & Test
+          command: npm test
       - store_test_results:
           path: testResults
+  build:
+    executor: node-active
+    steps:
+      - checkout
+      - run:
+          name: Validate versions
+          command: node -v && npm -v
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - run:
+          name: Lint & Test
+          command: npm test
+      - run:
+          name: Version
+          command: node tasks/version.js
+      - run:
+          name: Dist
+          command: node tasks/dist.js
+      - store_test_results:
+          path: testResults
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+            - tasks
+            - scripts
+  deploy:
+    executor: node-active
+    steps:
+      - run:
+          name: Publish npm
+          command: scripts/publishNpm
 
 workflows:
   version: 2
@@ -25,3 +60,15 @@ workflows:
           filters:
             branches:
               ignore: master
+  pipeline:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
