@@ -48,6 +48,8 @@ jobs:
   deploy:
     executor: node-active
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Publish npm
           command: scripts/publishNpm
