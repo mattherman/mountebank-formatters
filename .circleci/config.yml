@@ -1,7 +1,27 @@
 version: 2.1
-orbs:
-  node: circleci/node@3.0.0
+
+executors:
+  node-active:
+    docker:
+      - image: cimg/node:18.19.0
+
+jobs:
+  pr:
+    executor: node-active
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - run: npm test
+      - store_test_results:
+          path: testResults
+
 workflows:
-  node-tests:
+  version: 2
+  pr:
     jobs:
-      - node/test
+      - pr:
+          filters:
+            branches:
+              ignore: master
