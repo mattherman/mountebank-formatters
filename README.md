@@ -1,6 +1,10 @@
+# Project Status
+
+This repository is a fork of [bbyars/mountebank-formatters](https://github.com/bbyars/mountebank-formatters). See the project status in the [mattherman/mountebank](https://github.com/mattherman/mountebank?tab=readme-ov-file#project-status) for more information.
+
 # Formatters
 
-As of v2.4.0, [mountebank](https://github.com/bbyars/mountebank) supports custom formatters.
+As of v2.4.0, [mountebank](https://github.com/mattherman/mountebank) supports custom formatters.
 
 A formatter consists of two functions:
 * `load`, which loads the `--configfile` used to start mountebank
